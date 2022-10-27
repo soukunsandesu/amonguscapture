@@ -78,9 +78,7 @@ namespace AmongUsCapture {
                     exileCausesEnd = false;
                     break;
                 default: {
-                    if (exileCausesEnd)
-                        state = GameState.LOBBY;
-                    else if (meetingHudState < 4)
+                    if (!exileCausesEnd && meetingHudState < 4)
                         state = GameState.DISCUSSION;
                     else
                         state = GameState.TASKS;
@@ -329,7 +327,7 @@ namespace AmongUsCapture {
 
                             if (impostorCount == 0 || impostorCount >= innocentCount) {
                                 exileCausesEnd = true;
-                                state = GameState.LOBBY;
+                                //state = GameState.LOBBY;
                             }
                         }
                         
