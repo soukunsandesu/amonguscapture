@@ -53,7 +53,7 @@ namespace AmongUsCapture {
         public event EventHandler<LobbyEventArgs> JoinedLobby;
         public event EventHandler<ProcessHookArgs> ProcessHook;
         public event EventHandler<ProcessHookArgs> ProcessUnHook;
-        
+
         public event EventHandler CrackDetected;
         public event EventHandler<GameOverEventArgs> GameOver;
         public event EventHandler<PlayerCosmeticChangedEventArgs> PlayerCosmeticChanged;
@@ -304,36 +304,10 @@ namespace AmongUsCapture {
                     }
 
                     if (CurrentOffsets is null) continue;
-                    
+
 
                     #endregion
                     var state = GetGameState(ProcessMemory.getInstance());
-                    #region Check if exile causes game end
-
-                    if (oldState == GameState.DISCUSSION && state == GameState.TASKS) {
-                        
-                        var exiledPlayer = GetExiledPlayer(ProcessMemory.getInstance());
-                        if (exiledPlayer is not null) {
-                            int impostorCount = 0, innocentCount = 0;
-                            PlayerChanged?.Invoke(this, new PlayerChangedEventArgs {
-                                Action = PlayerAction.Exiled,
-                                Name = exiledPlayer.GetPlayerName(),
-                                IsDead = exiledPlayer.GetIsDead(),
-                                Disconnected = exiledPlayer.GetIsDisconnected(),
-                                Color = exiledPlayer.GetPlayerColor()
-                            });
-                            impostorCount = GetPlayers(ProcessMemory.getInstance()).Count(x => x.GetIsImposter() && x.PlayerName != "" && x.PlayerId != exiledPlayer.PlayerId && !x.GetIsDead() && !x.GetIsDisconnected());
-                            innocentCount = GetPlayers(ProcessMemory.getInstance()).Count(x => !x.GetIsImposter() && x.PlayerName != "" && x.PlayerId != exiledPlayer.PlayerId && !x.GetIsDead() && !x.GetIsDisconnected());
-
-                            if (impostorCount == 0 || impostorCount >= innocentCount) {
-                                exileCausesEnd = true;
-                                //state = GameState.LOBBY;
-                            }
-                        }
-                        
-                    }
-
-                    #endregion
 
                     #region State change checking
 
